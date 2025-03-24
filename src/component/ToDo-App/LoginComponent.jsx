@@ -21,9 +21,9 @@ export default function LoginComponent(){
     const [showErrorMessage, setShowErrorMessage] = useState(false)
 
     const navigate= useNavigate()
-    function handleSubmit(){
+    async function handleSubmit(){
 
-        if(authContext.login(username,password)){
+        if(await authContext.login(username,password)){
             navigate(`/welcome/${username}`)
         }
         else{
@@ -45,7 +45,7 @@ export default function LoginComponent(){
                 </div>
 
                 <div>
-                    <button type="button" onClick={handleSubmit}>Login</button>
+                    <button type="button" className="btn btn-success m-3" onClick={handleSubmit}>Login</button>
                 </div>
                 {showErrorMessage && <div className="errormessage"> Login Failed</div>}
             </div>
