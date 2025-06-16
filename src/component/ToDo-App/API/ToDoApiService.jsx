@@ -6,3 +6,4 @@ export const deleteTodoApi = (username,id) => apiClient.delete(`/users/${usernam
 export const getTodoApi = (username,id) => apiClient.get(`/users/${username}/todos/${id}`)
 export const updateTodoApi = (username,id,todo) => apiClient.put(`/users/${username}/todos/${id}`, todo)
 export const createTodoApi = (username,todo) => apiClient.post(`/users/${username}/todos`, todo)
+export const markTodoCompletedApi = (username,id) => apiClient.put(`/users/${username}/todos/update/${id}`)

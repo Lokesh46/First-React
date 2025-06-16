@@ -1,92 +1,123 @@
 import { useEffect, useState } from "react";
-import { deleteTodoApi, getTodos } from "./API/ToDoApiService";
-import { useAuth } from './Security/AuthContext'
+import { deleteTodoApi, getTodos, markTodoCompletedApi } from "./API/ToDoApiService";
+import { useAuth } from './Security/AuthContext';
+import "./css/list.css";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-import "./css/list.css"
-import toast from "react-hot-toast"
-import {  useNavigate } from "react-router-dom";
+export default function ListTodosComponent() {
+    const authContext = useAuth();
+    const username = authContext.username;
+    const navigate = useNavigate();
+    const [todos, setTodos] = useState([]);
 
-export default function ListTodosComponent(){
-    const authContext = useAuth()
-    const username = authContext.username
-    const today=new Date();
-    const targetDate = new Date(today.getFullYear()+12, today.getMonth(), today.getDate());
-    const navigate=useNavigate()
-    const [todos,setTodos] = useState([])
-
-    function refreshTodos(){
+    function refreshTodos() {
         getTodos(username)
-            .then((response) => {
-                setTodos(response.data)
-                
-            })
-            .catch(error => console.log(error))
-            .finally(() => console.log('Clean up'))
+        .then(response => setTodos(response.data))
+        .catch(error => console.log(error));
     }
 
     function deleteTodo(id) {
-        deleteTodoApi(username, id).then((response) => {
-            console.log(response)
-            if (response.status === 204) { 
-                toast.success("Todo deleted successfully!", { position: "top-right" });
-                refreshTodos();
+        deleteTodoApi(username, id)
+        .then(response => {
+            if (response.status === 204) {
+            toast.success("Todo deleted successfully!", { position: "top-right" });
+            refreshTodos();
             }
         })
-        .catch(error => console.log(error))
-        .finally(() => console.log('clean up'))
+        .catch(error => console.log(error));
+    }
+
+    function markCompleteTodo(id) {
+        markTodoCompletedApi(username, id)
+        .then(response => {
+            if (response.status === 200) {
+            toast.success("Todo marked as completed!", { position: "top-right" });
+            refreshTodos();
+            }
+        })
+        .catch(error => console.log(error));
+    }
+
+    function updateTodo(id) {
+        navigate(`/todos/${id}`);
+    }
+
+    function addNewTodo() {
+        navigate(`/todos/-1`);
     }
 
     useEffect(() => {
         refreshTodos();
     }, []);
 
-    function updateTodo(id) {
-        navigate(`/todos/${id}`);
-    }
-
-    function addnewTodo(){
-        navigate(`/todos/-1`)
-    }
-
     return (
-        <div className="container">
-            <h1>Todos List</h1>
-            <div>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th>Target Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
+        <div className="todo-container">
+        <div className="todo-grid">
+            {todos.map((todo) => (
+            <div className={`todo-card ${todo.done ? "done" : ""}`} key={todo.id}>
+                <div className="todo-content">
+                <div className="todo-row">
+                    <h4 className="todo-title">📝 Task</h4>
+                    <p className="todo-description">{todo.description}</p>
+                </div>
 
-                    <tbody>
-                        {
-                            todos.map(
-                                todo => (
-                                    <tr key={todo.id}>
-                                        <td>{todo.description}</td>
-                                        <td>{todo.done.toString()}</td>
-                                        <td>{todo.targetDate.toString()}</td>
-                                        <td className="actionbtn">
-                                            <button type="button" className="btn btn-warning" onClick={() => updateTodo(todo.id)} > Update </button>
-                                            <button type="button" className="btn btn-danger" onClick={() => deleteTodo(todo.id)} > Delete </button>
-                                        </td>
-                                    </tr>
-                                )
-                            )
-                        }
-                        
-                    </tbody>
-                </table>
-                <div className="btn btn-success m-4" onClick={addnewTodo}>Add new ToDo</div>
+                <div className="todo-row">
+                    <h4 className="todo-label">📅 Target Date</h4>
+                    <p className="todo-date">{new Date(todo.targetDate).toLocaleDateString()}</p>
+                </div>
+
+                <div className="todo-row">
+                    <h4 className="todo-label">📌 Status</h4>
+                    <p
+                    className={`status ${
+                        todo.done
+                        ? "status-done"
+                        : new Date(todo.targetDate) < new Date()
+                        ? "status-overdue"
+                        : "status-pending"
+                    }`}
+                    >
+                    {todo.done
+                        ? "✅ Completed"
+                        : new Date(todo.targetDate) < new Date()
+                        ? "⚠️ Overdue"
+                        : "⏳ Pending"}
+                    </p>
+                </div>
+                </div>
+
+                <div className="todo-actions">
+                <button onClick={() => updateTodo(todo.id)} title="Edit task" aria-label="Edit task">
+                    ✏️ Edit
+                </button>
+                {!todo.done && (
+                    <button
+                    onClick={() => markCompleteTodo(todo.id)}
+                    title="Mark as completed"
+                    aria-label="Mark as completed"
+                    >
+                    ✅ Complete
+                    </button>
+                )}
+                <button
+                    onClick={() => deleteTodo(todo.id)}
+                    title="Delete task"
+                    aria-label="Delete task"
+                    className="danger"
+                >
+                    🗑️ Delete
+                </button>
+                </div>
             </div>
+            ))}
         </div>
-    )
+
+        <div className="add-button">
+            <button onClick={addNewTodo} aria-label="Add new todo">
+            ➕ Add New Todo
+            </button>
+        </div>
+        </div>
+    );
 }
-
-
-
-
