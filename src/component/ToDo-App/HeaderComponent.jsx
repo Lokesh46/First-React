@@ -26,7 +26,7 @@ export default function HeaderComponent(){
                                     {isAuthenticated && <Link className="nav-link" to="/list-todos">Todos</Link>}
                                 </li>
                                 <li className="nav-item fs-5">
-                                    {isAuthenticated && <Link className="nav-link" to="/list-todos/Done">Completed Todos</Link>}
+                                    {isAuthenticated && <Link className="nav-link" to="/todos/done">Completed Todos</Link>}
                                 </li>
                             </ul>
                         </div>
