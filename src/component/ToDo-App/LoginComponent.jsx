@@ -2,10 +2,9 @@ import { useState } from 'react'
 import { BrowserRouter,Routes,Route, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from './Security/AuthContext'
 
-
 export default function LoginComponent(){
 
-    const [username, setUsername] =useState('test')
+    const [username, setUsername] =useState('')
     const authContext = useAuth()
     function handleUsenameChange(event) {
         setUsername(event.target.value)
@@ -32,23 +31,71 @@ export default function LoginComponent(){
     }
 
     return (
-        <div className="login">
-            <div className="loginForm">
-                <div>
-                    <label>Username</label>
-                    <input type="text" name="username" value={username} onChange={handleUsenameChange}></input>
-                </div>
+                <div
+  className="d-flex justify-content-center align-items-center vh-100"
+  style={{
+    background: "linear-gradient(to right, #e0f2fe, #90cdf4)",
+  }}
+>
+  <div
+    className="card shadow-lg p-4"
+    style={{
+      width: "100%",
+      maxWidth: "400px",
+      borderRadius: "16px",
+      backgroundColor: "#ffffff",
+    }}
+  >
+    <h2 className="text-center mb-4 text-primary">Login</h2>
 
-                <div>
-                    <label>Password</label>
-                    <input type="password" name="password" value={password} onChange={handlePasswordChange}></input>
-                </div>
+    <form>
+      <div className="form-floating mb-3">
+        <input
+          type="text"
+          className="form-control"
+          id="usernameInput"
+          placeholder="Username"
+          value={username}
+          onChange={handleUsenameChange}
+        />
+        <label htmlFor="usernameInput">Username</label>
+      </div>
 
-                <div>
-                    <button type="button" className="btn btn-success m-3" onClick={handleSubmit}>Login</button>
-                </div>
-                {showErrorMessage && <div className="errormessage"> Login Failed</div>}
-            </div>
-        </div>
+      <div className="form-floating mb-3">
+        <input
+          type="password"
+          className="form-control"
+          id="passwordInput"
+          placeholder="Password"
+          value={password}
+          onChange={handlePasswordChange}
+        />
+        <label htmlFor="passwordInput">Password</label>
+      </div>
+
+      {showErrorMessage && (
+        <div className="alert alert-danger py-2 text-center">Login Failed</div>
+      )}
+
+      <button
+        type="button"
+        className="btn btn-primary w-100 mb-3"
+        onClick={handleSubmit}
+        style={{ borderRadius: "8px" }}
+      >
+        Login
+      </button>
+
+      <div className="text-center">
+        <span className="text-muted">Don't have an account? </span>
+        <a href="/register" className="fw-semibold text-decoration-none text-primary">
+          Register
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+
     )
 }
