@@ -131,7 +131,8 @@
 /* Add New Todo button */
 .add-button {
   text-align: center;
-  margin-top: 2.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .add-button button {

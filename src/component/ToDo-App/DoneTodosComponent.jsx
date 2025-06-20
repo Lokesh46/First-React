@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { deleteTodoApi, getTodos, markTodoCompletedApi } from "./API/ToDoApiService";
+import { deleteTodoApi, getTodosByStatus } from "./API/ToDoApiService";
 import { useAuth } from './Security/AuthContext';
 import "./css/list.css";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-export default function ListTodosComponent() {
+export default function DoneTodosComponent() {
     const authContext = useAuth();
     const username = authContext.username;
     const navigate = useNavigate();
     const [todos, setTodos] = useState([]);
 
     function refreshTodos() {
-        getTodos(username)
+        getTodosByStatus(username, true) // only completed todos
         .then(response => setTodos(response.data))
         .catch(error => console.log(error));
     }
@@ -28,24 +28,9 @@ export default function ListTodosComponent() {
         .catch(error => console.log(error));
     }
 
-    function markCompleteTodo(id) {
-        markTodoCompletedApi(username, id)
-        .then(response => {
-            if (response.status === 200) {
-            toast.success("Todo marked as completed!", { position: "top-right" });
-            refreshTodos();
-            }
-        })
-        .catch(error => console.log(error));
-    }
-
-    function updateTodo(id) {
-        navigate(`/todos/${id}`);
-    }
-
-    function addNewTodo() {
-        navigate(`/todos/-1`);
-    }
+    // function updateTodo(id) {
+    //     navigate(`/todos/${id}`);
+    // }
 
     useEffect(() => {
         refreshTodos();
@@ -69,37 +54,17 @@ export default function ListTodosComponent() {
 
                 <div className="todo-row">
                     <h4 className="todo-label">📌 Status</h4>
-                    <p
-                    className={`status ${
-                        todo.done
-                        ? "status-done"
-                        : new Date(todo.targetDate) < new Date()
-                        ? "status-overdue"
-                        : "status-pending"
-                    }`}
-                    >
-                    {todo.done
-                        ? "✅ Completed"
-                        : new Date(todo.targetDate) < new Date()
-                        ? "⚠️ Overdue"
-                        : "⏳ Pending"}
-                    </p>
+                    <p className="status status-done">✅ Completed</p>
+                </div>
+
+                <div className="todo-row">
+                    <h4 className="todo-label">🏁 Completed On</h4>
+                    <p className="todo-date">{new Date(todo.completeDate).toLocaleDateString()}</p>
                 </div>
                 </div>
 
                 <div className="todo-actions">
-                <button onClick={() => updateTodo(todo.id)} title="Edit task" aria-label="Edit task">
-                    ✏️ Edit
-                </button>
-                {!todo.done && (
-                    <button
-                    onClick={() => markCompleteTodo(todo.id)}
-                    title="Mark as completed"
-                    aria-label="Mark as completed"
-                    >
-                    ✅ Complete
-                    </button>
-                )}
+                
                 <button
                     onClick={() => deleteTodo(todo.id)}
                     title="Delete task"
@@ -111,12 +76,6 @@ export default function ListTodosComponent() {
                 </div>
             </div>
             ))}
-        </div>
-
-        <div className="add-button">
-            <button onClick={addNewTodo} aria-label="Add new todo">
-            ➕ Add New Todo
-            </button>
         </div>
         </div>
     );

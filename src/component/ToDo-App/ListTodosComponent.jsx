@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { deleteTodoApi, getTodos, markTodoCompletedApi } from "./API/ToDoApiService";
+import { deleteTodoApi, getTodosByStatus, markTodoCompletedApi } from "./API/ToDoApiService";
 import { useAuth } from './Security/AuthContext';
 import "./css/list.css";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-export default function ListTodosComponent() {
+export default function ListPendingTodosComponent() {
     const authContext = useAuth();
     const username = authContext.username;
     const navigate = useNavigate();
     const [todos, setTodos] = useState([]);
 
     function refreshTodos() {
-        getTodos(username)
+        getTodosByStatus(username, false) // only pending todos
         .then(response => setTodos(response.data))
         .catch(error => console.log(error));
     }
@@ -53,6 +53,12 @@ export default function ListTodosComponent() {
 
     return (
         <div className="todo-container">
+            <div className="add-button">
+                <button onClick={addNewTodo} aria-label="Add new todo">
+                    ➕ Add New Todo
+                </button>
+            </div>
+            
         <div className="todo-grid">
             {todos.map((todo) => (
             <div className={`todo-card ${todo.done ? "done" : ""}`} key={todo.id}>
@@ -113,11 +119,7 @@ export default function ListTodosComponent() {
             ))}
         </div>
 
-        <div className="add-button">
-            <button onClick={addNewTodo} aria-label="Add new todo">
-            ➕ Add New Todo
-            </button>
-        </div>
+        
         </div>
     );
 }
