@@ -79,7 +79,7 @@ function ToDoComponent() {
         () => getTodo(),[id]
     )
     return (
-        <div className="container">
+        <div className="container" style={{ paddingTop: '120px' }}>
             <h1>Enter ToDo Details</h1>
             <div>
                 <Formik initialValues={ { description, targetDate } }

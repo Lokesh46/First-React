@@ -1,48 +1,53 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from './Security/AuthContext'
 
+export default function HeaderComponent() {
+    const authContext = useAuth()
+    const isAuthenticated = authContext.isAuthenticated
+    const username = authContext.username
 
-export default function HeaderComponent(){
-        const authContext = useAuth()
-
-        const isAuthenticated = authContext.isAuthenticated
-        const username = authContext.username
-        function logout(){
-            authContext.logout()
-
-        }
+    function logout() {
+        authContext.logout()
+    }
 
     return (
-        <header className="border-bottom border-light border-5 p-2">
+        <header
+  className="p-3"
+  style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    zIndex: 1000,
+    background: 'transparent',
+    boxShadow: 'none',
+    backdropFilter: 'blur(10px)' // Optional: Adds a subtle glass effect
+  }}
+>
+
             <div className="container">
-                <div className="row">
-                    <nav className="navbar navbar-expand-lg">
-                        <div className="collapse navbar-collapse">
-                            <ul className="navbar-nav">
-                                <li className="nav-item fs-5">
-                                    {isAuthenticated && <Link className="nav-link" to="/welcome/test">Home</Link>}
-                                </li>
-                                <li className="nav-item fs-5">
-                                    {isAuthenticated && <Link className="nav-link" to="/list-todos">Todos</Link>}
-                                </li>
-                                <li className="nav-item fs-5">
-                                    {isAuthenticated && <Link className="nav-link" to="/todos/done">Completed Todos</Link>}
-                                </li>
-                            </ul>
-                        </div>
-                        <ul className="navbar-nav">
-                            <li className="nav-item fs-5">
-                                {!isAuthenticated && <Link className="nav-link" to="/login">Login</Link>}
-                            </li>
-                            <li className="nav-item fs-5">
-                                {isAuthenticated && username && <span className="nav-link">Hi, {username}</span>}
-                            </li>
-                            <li className="nav-item fs-5">
-                                {isAuthenticated && <Link className="nav-link" onClick={logout} to="/logout">Logout</Link>}
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                <nav className="navbar navbar-expand-lg d-flex justify-content-between align-items-center">
+                    <div className="d-flex gap-3 align-items-center">
+                        {isAuthenticated && (
+                            <>
+                                <Link className="nav-link fs-5 text-dark" to="/list-todos">Home</Link>
+                                <Link className="nav-link fs-5 text-dark" to="/todos/done">Completed Todos</Link>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="d-flex gap-3 align-items-center">
+                        {!isAuthenticated && (
+                            <Link className="nav-link fs-5 text-dark" to="/login">Login</Link>
+                        )}
+                        {isAuthenticated && username && (
+                            <span className="nav-link fs-5 text-dark">Hi, {username}</span>
+                        )}
+                        {isAuthenticated && (
+                            <Link className="nav-link fs-5 text-dark" onClick={logout} to="/logout">Logout</Link>
+                        )}
+                    </div>
+                </nav>
             </div>
         </header>
     )

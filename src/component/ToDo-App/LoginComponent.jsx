@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter,Routes,Route, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from './Security/AuthContext'
-
+import "./css/login.css"
 export default function LoginComponent(){
 
     const [username, setUsername] =useState('')
@@ -23,7 +23,7 @@ export default function LoginComponent(){
     async function handleSubmit(){
 
         if(await authContext.login(username,password)){
-            navigate(`/welcome/${username}`)
+            navigate(`list-todos`)
         }
         else{
             setShowErrorMessage(true)
@@ -33,9 +33,6 @@ export default function LoginComponent(){
     return (
                 <div
   className="d-flex justify-content-center align-items-center vh-100"
-  style={{
-    background: "linear-gradient(to right, #e0f2fe, #90cdf4)",
-  }}
 >
   <div
     className="card shadow-lg p-4"
@@ -49,7 +46,7 @@ export default function LoginComponent(){
     <h2 className="text-center mb-4 text-primary">Login</h2>
 
     <form>
-      <div className="form-floating mb-3">
+      <div className="mb-3">
         <input
           type="text"
           className="form-control"
@@ -58,10 +55,9 @@ export default function LoginComponent(){
           value={username}
           onChange={handleUsenameChange}
         />
-        <label htmlFor="usernameInput">Username</label>
       </div>
 
-      <div className="form-floating mb-3">
+      <div className="mb-3">
         <input
           type="password"
           className="form-control"
@@ -70,7 +66,6 @@ export default function LoginComponent(){
           value={password}
           onChange={handlePasswordChange}
         />
-        <label htmlFor="passwordInput">Password</label>
       </div>
 
       {showErrorMessage && (

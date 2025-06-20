@@ -1,9 +1,9 @@
-/* Container & Grid */
 .todo-container {
-  padding: 2rem;
+  padding: 100px;
+  min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fb;
 }
+
 
 .todo-grid {
   display: grid;
