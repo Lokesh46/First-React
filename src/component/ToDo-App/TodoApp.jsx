@@ -10,6 +10,7 @@ import FooterComponent from './FooterComponent'
 import AuthProvider, { useAuth } from './Security/AuthContext'
 import TodoComponent from './ToDoComponent'
 import DoneTodosComponent from'./DoneTodosComponent'
+import RegisterComponent from './RegisterComponent'
 function AuthenticatedRoute({children}){
     const authContext = useAuth()
     if(authContext.isAuthenticated)
@@ -50,6 +51,10 @@ export default function TodoApp(){
                             </AuthenticatedRoute>
                         }/>
                         
+                        <Route path='/register' element={
+                                <RegisterComponent/>
+                        }/>
+
                         <Route path='/logout' element={
                             <AuthenticatedRoute>
                                 <LogoutComponent/>
