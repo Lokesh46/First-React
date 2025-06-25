@@ -82,7 +82,7 @@ export default function LoginComponent(){
 
       <div className="text-center">
         <span className="text-muted">Don't have an account? </span>
-        <Link href="/register" className="fw-semibold text-decoration-none text-primary">
+        <Link to="/register" className="fw-semibold text-decoration-none text-primary">
           Register
         </Link>
       </div>

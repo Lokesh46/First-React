@@ -104,7 +104,7 @@ export default function RegisterComponent() {
 
                 <div className="text-center">
         <span className="text-muted">Already have an account? </span>
-        <Link href="/" className="fw-semibold text-decoration-none text-primary">
+        <Link to="/" className="fw-semibold text-decoration-none text-primary">
           Login
         </Link>
       </div>
