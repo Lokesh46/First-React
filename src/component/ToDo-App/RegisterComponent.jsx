@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter,Routes,Route, useNavigate, useParams } from 'react-router-dom'
+import { BrowserRouter,Routes,Route, useNavigate, useParams, Link } from 'react-router-dom'
 import { useAuth } from './Security/AuthContext'
 
 import { register } from './API/AuthenticationApiService'
@@ -104,9 +104,9 @@ export default function RegisterComponent() {
 
                 <div className="text-center">
         <span className="text-muted">Already have an account? </span>
-        <a href="/" className="fw-semibold text-decoration-none text-primary">
+        <Link href="/" className="fw-semibold text-decoration-none text-primary">
           Login
-        </a>
+        </Link>
       </div>
             </div>
 

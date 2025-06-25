@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter,Routes,Route, useNavigate, useParams } from 'react-router-dom'
+import { BrowserRouter,Routes,Route, useNavigate, useParams, Link } from 'react-router-dom'
 import { useAuth } from './Security/AuthContext'
 import "./css/login.css"
 export default function LoginComponent(){
@@ -82,9 +82,9 @@ export default function LoginComponent(){
 
       <div className="text-center">
         <span className="text-muted">Don't have an account? </span>
-        <a href="/register" className="fw-semibold text-decoration-none text-primary">
+        <Link href="/register" className="fw-semibold text-decoration-none text-primary">
           Register
-        </a>
+        </Link>
       </div>
     </form>
   </div>
